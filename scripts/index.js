@@ -7,7 +7,7 @@ import Card from "./Card.js";
 import Section from "./Section.js";
 import { Popup } from "./Popup.js";
 import { PopupWithImage } from "./PopupWithImage.js";
-import { PopupWithForm } from "./PopupWithForm.js";
+import PopupWithForm from "./PopupWithForm.js";
 import UserInfo from "./UserInfo.js";
 
 const selectors = {
@@ -81,29 +81,73 @@ const defaultCardList = new Section({
 defaultCardList.rendererItems();
 
 
-const inputListCreate = document.querySelector('.popup__input');
 
 
 
 /*  Как-то не очень получается.  Неужели нет более простого варианта это реализовать? */
 
+// const createSample = new PopupWithForm({
+//   popupSelector: ".popup__container",
+//   handleFormSubmit: (data) => {
+//     // const cardData = {};
+//     // cardData.title = imgNameInput.value;
+//     // cardData.link = imgUrlInput.value;
+//     console.log(data)
+//     const card = new Card({
+//       data: cardData,
+//       handleCardClick: () => {
+//         newCardImg.open(cardData);
+//       }
+//     }, cardListSelector: '.template-cards');
+//     const cardElement = card.generateCard();
+//     defaultCardList.addItem(cardElement);
+//     createSample.close();
+//   }
+// });
+const popupCardName = document.querySelector('.popup__input_picture-name');
+const popupURL = document.querySelector('.popup__input_picture-link');
+
+const inputListCreate = Array.from(editFormModalWindow.querySelectorAll('.popup__input'));
+
+
 const createSample = new PopupWithForm({
-  popupSelector: ".popup__container",
-  handleSubmitForm: () => {
-    const cardData = {};
-    cardData.name = imgNameInput.value;
-    cardData.link = imgUrlInput.value;
-    const card = new Card({
-      data: cardData,
-      handleCardClick: () => {
-        newCardImg.open(cardData);
-      }
-    }, '.template-cards');
-    const cardElement = card.generateCard();
-    defaultCardList.addItem(cardElement);
-    createSample.close();
+  popupSelector: '.popup__container',
+  handleFormSubmit: (data) => {
+    console.log(data)
   }
-});
+})
+
+
+
+
+// const createSample = new PopupWithForm({
+//   popupSelector: '.popup__container',
+//   form: editFormModalWindow,
+//   inputList: inputListCreate,
+//   handleFormSubmit: () => {
+//     const cardObj = {};
+//     cardObj.name = popupCardName.value;
+//     cardObj.link = popupURL.value;
+//     const card = new Card({
+//       data: cardObj,
+//       handleCardClick: () => {
+//         newCardImg.open(cardObj);
+//       }
+//     }, '.template-cards');
+//     const cardElement = card.generateCard();
+//     defaultCardList.addItem(cardElement);
+//     createSample.close();
+//   }
+// });
+// createSample.setEventListeners();
+// openCardFormButton.addEventListener('click', function (e){
+//   editFormModalWindow.toggle
+// createSample.open();
+
+
+
+// const formCreate = document.forms.create;
+// console.log(formCreate);
 
 
 
