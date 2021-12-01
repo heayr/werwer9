@@ -8,7 +8,7 @@ import Section from "./Section.js";
 import { Popup } from "./Popup.js";
 import { PopupWithImage } from "./PopupWithImage.js";
 import PopupWithForm from "./PopupWithForm.js";
-import UserInfo from "./UserInfo.js";
+// import UserInfo from "./UserInfo.js";
 
 const selectors = {
   formSelector: '.popup__form',
@@ -60,8 +60,14 @@ const allPopupContainers = document.querySelectorAll('.popup__container');
 // переменная кнопки для отключения её в форме т.к. найти её нужно 1 раз!
 const disabledButton = popupPictures.querySelector('.popup__submit');
 
+function handleCardClick(title, link) {
+  newCardImg.open(title, link);
+}
 
-const newCardImg = new PopupWithImage(popupBigPic);
+
+
+const newCardImg = new PopupWithImage(".popup-big");
+newCardImg.setEventListeners();
 
 const defaultCardList = new Section({
   data: initialCards,
@@ -78,76 +84,81 @@ const defaultCardList = new Section({
 },
   cardListSelector);
 
+const template = document.querySelector('.template-cards');
+
+const form2 = new PopupWithForm({
+  popupSelector: '.popup_cards',
+  formSubmitHandler: (item) => {
+    const imgCard = new Card(item, handleCardClick, template);
+    const cardElement = imgCard.generateCard();
+    defaultCardList.addItem(cardElement);
+    form2.close();
+  }
+});
+
+
+// const form2 = new PopupWithForm({
+//   popupSelector: '.popup_cards',
+//   formSubmitHandler: (item) => {
+//     const cardImg = new Card({
+//       data: item,
+//       handleCardClick: () => {
+//         newCardImg.open(item);
+//       }
+//     }, '.template-cards');
+//     const cardElement = cardImg.generateCard();
+//     defaultCardList.addItem(cardElement);
+//   }
+// }, cardListSelector);
+
+form2.setEventListeners();
+
+// form2.setEventListeners();
+
+// const form = new PopupWithForm({
+//   popupSelector: ".popup_cards",
+//   formSubmitHandler: (item) => {
+//     const card = new Card(item, {
+//       handleCardClick: () => {
+//         newCardImg.open();
+//       }
+//     }, ".template-cards");
+//     const cardElement = card.generateCard();
+//     defaultCardList.addItem(cardElement);
+//     form.close();
+//   }
+// });
+
+/*
+const form = new PopupWithForm({
+  popupSelector: '.popup_cards',
+  formSubmitHandler: () => {
+    const cardObj = {};
+    cardObj.title = imgNameInput.value;
+    cardObj.link = imgUrlInput.value;
+    const card = new Card({
+      data: cardObj, handleCardClick: () => {
+        newCardImg.open(cardObj);
+      }
+    }, '.template-cards');
+    const cardElement = card.generateCard();
+    defaultCardList.addItem(cardElement);
+    form.close();
+  }
+});
+*/
+
 defaultCardList.rendererItems();
 
 
 
 
 
-/*  Как-то не очень получается.  Неужели нет более простого варианта это реализовать? */
 
-// const createSample = new PopupWithForm({
-//   popupSelector: ".popup__container",
-//   handleFormSubmit: (data) => {
-//     // const cardData = {};
-//     // cardData.title = imgNameInput.value;
-//     // cardData.link = imgUrlInput.value;
-//     console.log(data)
-//     const card = new Card({
-//       data: cardData,
-//       handleCardClick: () => {
-//         newCardImg.open(cardData);
-//       }
-//     }, cardListSelector: '.template-cards');
-//     const cardElement = card.generateCard();
-//     defaultCardList.addItem(cardElement);
-//     createSample.close();
-//   }
-// });
 const popupCardName = document.querySelector('.popup__input_picture-name');
 const popupURL = document.querySelector('.popup__input_picture-link');
 
 const inputListCreate = Array.from(editFormModalWindow.querySelectorAll('.popup__input'));
-
-
-const createSample = new PopupWithForm({
-  popupSelector: '.popup__container',
-  handleFormSubmit: (data) => {
-    console.log(data)
-  }
-})
-
-
-
-
-// const createSample = new PopupWithForm({
-//   popupSelector: '.popup__container',
-//   form: editFormModalWindow,
-//   inputList: inputListCreate,
-//   handleFormSubmit: () => {
-//     const cardObj = {};
-//     cardObj.name = popupCardName.value;
-//     cardObj.link = popupURL.value;
-//     const card = new Card({
-//       data: cardObj,
-//       handleCardClick: () => {
-//         newCardImg.open(cardObj);
-//       }
-//     }, '.template-cards');
-//     const cardElement = card.generateCard();
-//     defaultCardList.addItem(cardElement);
-//     createSample.close();
-//   }
-// });
-// createSample.setEventListeners();
-// openCardFormButton.addEventListener('click', function (e){
-//   editFormModalWindow.toggle
-// createSample.open();
-
-
-
-// const formCreate = document.forms.create;
-// console.log(formCreate);
 
 
 
@@ -169,6 +180,8 @@ cardFormValidator.enableValidation();
 openCardFormButton.addEventListener('click', () => {
   cardFormValidator.disableSubmitButton();
   // openModalWindow(cardFormModalWindow);
+  form2.open()
+
 });
 
 // <-------- новый функционал через Class Card --------->
@@ -178,18 +191,9 @@ openCardFormButton.addEventListener('click', () => {
 
 
 
-// Не позволяет закрывать popup внутри контейнера popup
-allPopupContainers.forEach((doNotClose) => {
-  doNotClose.addEventListener('click', (evt) => {
-    evt.stopPropagation();
-  });
-})
 
 
-//блокировка Закрытия popup__img кликом по картинке
-bigImg.addEventListener('click', (evt) => {
-  evt.stopPropagation();
-});
+
 
 
 
@@ -197,7 +201,10 @@ bigImg.addEventListener('click', (evt) => {
 // eventListener'Ы
 
 // popupEdit.addEventListener('click', onClickEdit);
-// openCardFormButton.addEventListener('click', () => openPopup(popupPictures));
+// openCardFormButton.addEventListener('click', () => {
+//   cardFormValidator.updateErrorsAndButtonState(cardFormModalWindow);
+//   form2.open()
+// });
 
 // formElement.addEventListener('submit', handleFormSubmitHandler);
 

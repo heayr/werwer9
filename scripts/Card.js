@@ -29,10 +29,7 @@ export default class Card {
   _setEventListeners() {
     this._element.querySelector('.elements__delete-button').addEventListener('click', this._deleteCard);
     this._element.querySelector('.elements__cell-like').addEventListener('click', this._likeButton);
-    this._element.querySelector('.elements__image').addEventListener('click', () => {
-      this.handleCardClick();
-    });
-
+    this._element.querySelector('.elements__image').addEventListener('click', () => { this.handleCardClick(this._title, this._link); });
   }
 
   generateCard() {
