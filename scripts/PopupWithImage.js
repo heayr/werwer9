@@ -4,15 +4,18 @@ export class PopupWithImage extends Popup {
   constructor(popupSelector, popupImg) {
     super(popupSelector);
     this._popupImage = document.querySelector('.popup__img')
-    this._popupImg = popupImg;
+    // this._popupImg = popupImg;
     this._popupText = document.querySelector('.popup__figcaption')
   }
 
 
-  open(data) {
-    this._popupImage.src = data.link;
-    this._popupText.src = data.title;
-    this._popupText.textContent = data.title;
+  open(title, link) {
+    // this._popupImage.src = data.link;
+    this._popupImage.src = link;
+    // this._popupText.src = data.title;
+    this._popupText.src = title;
+    // this._popupText.textContent = data.title;
+    this._popupText.textContent = title;
     super.open();
     super.setEventListeners();
   }
@@ -25,11 +28,6 @@ export class PopupWithImage extends Popup {
   //   this._popupImg.querySelector('.popup__img').src = this._link;
   // }
 
-  // close() {
-  //   super.close();
-  //   this._popupImg.src = '';
-  //   this._popupImg.alt = '';
-  //   this._popupText.textContent = '';
-  // }
+
 }
 

@@ -60,105 +60,99 @@ const allPopupContainers = document.querySelectorAll('.popup__container');
 // переменная кнопки для отключения её в форме т.к. найти её нужно 1 раз!
 const disabledButton = popupPictures.querySelector('.popup__submit');
 
+
+
+// константы
+const editFormValidator = new FormValidator(selectors, editFormModalWindow);
+editFormValidator.enableValidation();
+
+const cardFormValidator = new FormValidator(selectors, cardFormModalWindow);
+cardFormValidator.enableValidation();
+// const template = document.querySelector('.template-cards'); это не работает в коде заместо  '.template-cards'
+
+const newCardImg = new PopupWithImage(".popup-big");
+// функции
 function handleCardClick(title, link) {
   newCardImg.open(title, link);
 }
-
-
-
-const newCardImg = new PopupWithImage(".popup-big");
-newCardImg.setEventListeners();
-
 const defaultCardList = new Section({
   data: initialCards,
   renderer: (item) => {
-    const card = new Card({
-      data: item,
-      handleCardClick: () => {
-        newCardImg.open(item);
-      }
-    }, '.template-cards');
+    const card = new Card(item, handleCardClick, '.template-cards');
     const cardElement = card.generateCard();
     defaultCardList.addItem(cardElement);
-  }
-},
-  cardListSelector);
-
-const template = document.querySelector('.template-cards');
-
-const form2 = new PopupWithForm({
-  popupSelector: '.popup_cards',
-  formSubmitHandler: (item) => {
-    const imgCard = new Card(item, handleCardClick, template);
-    const cardElement = imgCard.generateCard();
-    defaultCardList.addItem(cardElement);
-    form2.close();
-  }
-});
+  },
+}, cardListSelector);
 
 
-// const form2 = new PopupWithForm({
-//   popupSelector: '.popup_cards',
-//   formSubmitHandler: (item) => {
-//     const cardImg = new Card({
-//       data: item,
-//       handleCardClick: () => {
-//         newCardImg.open(item);
-//       }
-//     }, '.template-cards');
-//     const cardElement = cardImg.generateCard();
-//     defaultCardList.addItem(cardElement);
-//   }
-// }, cardListSelector);
-
-form2.setEventListeners();
-
-// form2.setEventListeners();
-
-// const form = new PopupWithForm({
-//   popupSelector: ".popup_cards",
-//   formSubmitHandler: (item) => {
-//     const card = new Card(item, {
-//       handleCardClick: () => {
-//         newCardImg.open();
-//       }
-//     }, ".template-cards");
-//     const cardElement = card.generateCard();
-//     defaultCardList.addItem(cardElement);
-//     form.close();
-//   }
-// });
-
-/*
 const form = new PopupWithForm({
   popupSelector: '.popup_cards',
-  formSubmitHandler: () => {
-    const cardObj = {};
-    cardObj.title = imgNameInput.value;
-    cardObj.link = imgUrlInput.value;
-    const card = new Card({
-      data: cardObj, handleCardClick: () => {
-        newCardImg.open(cardObj);
-      }
-    }, '.template-cards');
-    const cardElement = card.generateCard();
+  formSubmitHandler: (item) => {
+    const imgCard = new Card(item, handleCardClick, '.template-cards');
+    const cardElement = imgCard.generateCard();
     defaultCardList.addItem(cardElement);
     form.close();
-  }
-});
-*/
+  },
+}, cardListSelector /* похоже этот селектор не влияет ни на что */);
 
 defaultCardList.rendererItems();
 
 
 
+openCardFormButton.addEventListener('click', () => {
+  cardFormValidator.disableSubmitButton();
+  /*form2.open()*/
+  form.open()
+});
+
+newCardImg.setEventListeners();
+form.setEventListeners();
+
+
+// const defaultCardList = new Section({
+//   data: initialCards,
+//   renderer: (item) => {
+//     const card = new Card({
+//       data: item,
+//       handleCardClick: () => {
+//         newCardImg.open(item);
+//       }
+//     }, '.template-cards');
+//     const cardElement = card.generateCard();
+//     defaultCardList.addItem(cardElement);
+//   }
+// },
+//   cardListSelector);
+
+
+// const form2 = new PopupWithForm({
+//   popupSelector: '.popup_cards',
+//   formSubmitHandler: (item) => {
+//     const imgCard = new Card({
+//       data: item,
+//       handleCardClick
+//     }, '.template-cards');
+//     const cardElement = imgCard.generateCard();
+//     defaultCardList.addItem(cardElement);
+//     form2.close();
+//   }
+// });
 
 
 
-const popupCardName = document.querySelector('.popup__input_picture-name');
-const popupURL = document.querySelector('.popup__input_picture-link');
+// form2.setEventListeners();
 
-const inputListCreate = Array.from(editFormModalWindow.querySelectorAll('.popup__input'));
+
+
+
+
+
+
+
+// const popupCardName = document.querySelector('.popup__input_picture-name');
+// const popupURL = document.querySelector('.popup__input_picture-link');
+
+// const inputListCreate = Array.from(editFormModalWindow.querySelectorAll('.popup__input'));
 
 
 
@@ -171,18 +165,8 @@ const inputListCreate = Array.from(editFormModalWindow.querySelectorAll('.popup_
 //   return (new Card(item, '#template')).generateCard();
 // }
 
-const editFormValidator = new FormValidator(selectors, editFormModalWindow);
-editFormValidator.enableValidation();
 
-const cardFormValidator = new FormValidator(selectors, cardFormModalWindow);
-cardFormValidator.enableValidation();
-
-openCardFormButton.addEventListener('click', () => {
-  cardFormValidator.disableSubmitButton();
-  // openModalWindow(cardFormModalWindow);
-  form2.open()
-
-});
+// cardFormValidator.addEventListener('submit', formSubmitHandler);
 
 // <-------- новый функционал через Class Card --------->
 
