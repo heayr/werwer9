@@ -1,6 +1,7 @@
 
 import { initialCards } from "./initialCards.js";
 
+
 import { FormValidator } from "./FormValidator.js";
 
 import Card from "./Card.js";
@@ -84,11 +85,13 @@ const defaultCardList = new Section({
   },
 }, cardListSelector);
 
-
+// title: cardName,
+// link: cardUrl,
+// alt: cardName
 const form = new PopupWithForm({
   popupSelector: '.popup_cards',
   formSubmitHandler: (item) => {
-    const imgCard = new Card(item, handleCardClick, '.template-cards');
+    const imgCard = new Card({ title: item["input-picture-name"], link: item["input-picture-link"] }, handleCardClick, '.template-cards');
     const cardElement = imgCard.generateCard();
     defaultCardList.addItem(cardElement);
     form.close();
@@ -97,14 +100,12 @@ const form = new PopupWithForm({
 
 defaultCardList.rendererItems();
 
-
-
 openCardFormButton.addEventListener('click', () => {
   cardFormValidator.disableSubmitButton();
   /*form2.open()*/
   form.open()
 });
-
+//  листенеры
 newCardImg.setEventListeners();
 form.setEventListeners();
 
