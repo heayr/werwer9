@@ -1,18 +1,18 @@
 export default class UserInfo {
-  constructor({ profileTitle, profileSubtitle }) {
-    this.profileTitle = profileTitle;
-    this.profileSubtitle = profileSubtitle;
+  constructor({ userNameSelector, userSubtitleSelector }) {
+    this._userNameSelector = document.querySelector(userNameSelector);
+    this._userSubtitleSelector = document.querySelector(userSubtitleSelector);
   }
 
   getUserInfo() {
     return {
-      title: this.profileTitle.textContent,
-      subtitle: this.profileSubtitle.textContent
+      title: this._userNameSelector.textContent,
+      subtitle: this._userSubtitleSelector.textContent
     }
   }
 
   setUserInfo(data) {
-    this.profileTitle.textContent = data.title;
-    this.profileSubtitle.textContent = data.subtitle;
+    this._userNameSelector.textContent = data['input-name'];
+    this._userSubtitleSelector.textContent = data['input-status'];
   }
 }
